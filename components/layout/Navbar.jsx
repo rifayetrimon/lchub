@@ -1,88 +1,113 @@
 "use client";
 
-import { useState } from "react";
-
-const navigation = [
-  { name: "Home", href: "#", current: true },
-  { name: "Directory", href: "#", current: false },
-  { name: "Job Board", href: "#", current: false },
-  // Emergency Contact will be handled separately
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import * as React from "react";
+import Link from "next/link";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  // Example dropdown items
-  const emergencyContacts = [
-    { name: "Police", href: "#" },
-    { name: "Fire Department", href: "#" },
-    { name: "Ambulance", href: "#" },
-  ];
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   return (
     <nav className="bg-white w-full shadow">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo or Brand */}
+          {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img
               alt="Your Company"
-              src="images/logo/logo1.png"
+              src="/images/logo/logo1.png"
               className="h-8 w-auto"
             />
           </div>
-          {/* Nav Items */}
+          {/* Navigation Menu */}
           <div className="flex items-center space-x-4">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className={classNames(
-                  item.current
-                    ? "text-blue-700 font-semibold"
-                    : "text-gray-700 hover:text-blue-700",
-                  "px-3 py-2 rounded-md text-sm"
-                )}
-              >
-                {item.name}
-              </a>
-            ))}
-
-            {/* Emergency Contact Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setDropdownOpen((open) => !open)}
-                onBlur={() => setDropdownOpen(false)}
-                className="px-3 py-2 rounded-md text-sm text-gray-700 hover:text-blue-700 focus:outline-none"
-              >
-                Emergency Contact
-              </button>
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-10">
-                  {emergencyContacts.map((contact) => (
-                    <a
-                      key={contact.name}
-                      href={contact.href}
-                      className="block px-4 py-2 text-gray-700 hover:bg-blue-50"
+            <NavigationMenu viewport={false}>
+              <NavigationMenuList className="flex items-center space-x-2">
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/"
+                      className="px-3 py-2 rounded-md text-sm text-gray-700 hover:text-blue-700 font-semibold"
                     >
-                      {contact.name}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
+                      Home
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/directory"
+                      className="px-3 py-2 rounded-md text-sm text-gray-700 hover:text-blue-700"
+                    >
+                      Directory
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/jobs"
+                      className="px-3 py-2 rounded-md text-sm text-gray-700 hover:text-blue-700"
+                    >
+                      Job Board
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                {/* Emergency Contact Dropdown */}
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="flex items-center px-3 py-2 rounded-md text-sm text-gray-700 hover:text-blue-700 bg-white">
+                    Emergency Contact
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className="w-48 border rounded-md shadow-lg p-2 bg-white">
+                    <ul>
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href="#"
+                            className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded"
+                          >
+                            Police
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href="#"
+                            className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded"
+                          >
+                            Fire Department
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href="#"
+                            className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded"
+                          >
+                            Ambulance
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
             {/* Profile or Join Button */}
             {isLoggedIn ? (
               <img
                 alt="Profile"
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                className="h-8 w-8 rounded-full"
+                className="h-8 w-8 rounded-full ml-4"
               />
             ) : (
               <button

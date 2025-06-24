@@ -1,7 +1,16 @@
+// =======================================
+// FILE 2: /app/jobs/[jobId]/page.js (Job Details Page)
+// =======================================
+
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { FaMapMarkerAlt, FaBriefcase, FaBuilding } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaBriefcase,
+  FaBuilding,
+  FaArrowLeft,
+} from "react-icons/fa";
 
 // Dummy job data (replace with real fetch)
 const jobs = [
@@ -29,7 +38,7 @@ const jobs = [
       "Participate in code reviews and team meetings.",
     ],
     requirements: [
-      "Bachelor’s degree in Computer Science or related field.",
+      "Bachelor's degree in Computer Science or related field.",
       "1+ years experience with React.js.",
       "Strong understanding of HTML, CSS, and JavaScript.",
       "Good communication and teamwork skills.",
@@ -100,6 +109,14 @@ export default function JobDetailsPage({ params }) {
   return (
     <main className="min-h-screen py-10 bg-[#F4F8FB]">
       <div className="max-w-3xl mx-auto px-4">
+        {/* Back button */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-blue-600 font-medium mb-4 hover:underline"
+        >
+          <FaArrowLeft size={14} /> Back to Job Board
+        </Link>
+
         {/* Job Header */}
         <div className="bg-white rounded-2xl shadow p-6 mb-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-1">{job.title}</h1>
@@ -136,11 +153,9 @@ export default function JobDetailsPage({ params }) {
 
         {/* Company Overview */}
         <div className="bg-white rounded-2xl shadow p-6 mb-6 flex items-center gap-4">
-          <img
-            src={job.company.logo}
-            alt={job.company.name}
-            className="w-16 h-16 rounded-full object-cover border"
-          />
+          <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+            <FaBuilding size={24} />
+          </div>
           <div>
             <div className="font-semibold text-gray-800">
               {job.company.name}

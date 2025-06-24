@@ -122,7 +122,15 @@ export default function JobBoardPage() {
     <main className="min-h-screen py-10 ">
       {/* Page Header */}
       <div className="max-w-4xl mx-auto px-4 mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Job Board</h1>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-3xl font-bold text-gray-800">Job Board</h1>
+          <Link
+            href="/jobs/new"
+            className="bg-[#6DA2FB] text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-600 transition"
+          >
+            + Post a Job
+          </Link>
+        </div>
         <p className="text-gray-600 text-lg">
           Find part-time, full-time, and freelance opportunities.
         </p>

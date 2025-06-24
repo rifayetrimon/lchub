@@ -57,7 +57,7 @@ export default function ProviderProfilePage() {
   const isLoggedIn = true; // Replace with real auth logic
 
   return (
-    <main className="bg-[#F4F8FB] min-h-screen pb-12">
+    <main className="min-h-screen pb-12">
       {/* Profile Header */}
       <div className="relative">
         <img

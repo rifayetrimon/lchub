@@ -153,13 +153,13 @@ export default function Navbar() {
                 className="h-8 w-8 rounded-full ml-4"
               />
             ) : (
-              <button
+              <Link
+                href="/register"
                 className="ml-4 px-4 py-2 rounded-md text-white"
                 style={{ backgroundColor: "#6DA2FB" }}
-                onClick={() => setIsLoggedIn(true)}
               >
                 Join
-              </button>
+              </Link>
             )}
           </div>
         </div>

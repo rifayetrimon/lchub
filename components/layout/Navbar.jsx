@@ -11,6 +11,65 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 
+const emergencyContacts = [
+  {
+    label: "Police",
+    href: "/emergency-contacts/police",
+  },
+  {
+    label: "Fire Department",
+    href: "/emergency-contacts/fire-department",
+  },
+  {
+    label: "Ambulance",
+    href: "/emergency-contacts/ambulance",
+  },
+  {
+    label: "Plumber",
+    href: "/emergency-contacts/plumber",
+  },
+  {
+    label: "Electrician",
+    href: "/emergency-contacts/electrician",
+  },
+  {
+    label: "AC Service",
+    href: "/emergency-contacts/ac-service",
+  },
+  {
+    label: "Locksmith",
+    href: "/emergency-contacts/locksmith",
+  },
+  {
+    label: "Water Delivery",
+    href: "/emergency-contacts/water-delivery",
+  },
+  {
+    label: "Tow Truck",
+    href: "/emergency-contacts/tow-truck",
+  },
+  {
+    label: "Pest Control",
+    href: "/emergency-contacts/pest-control",
+  },
+  {
+    label: "Gas Delivery",
+    href: "/emergency-contacts/gas-delivery",
+  },
+  {
+    label: "Roofer",
+    href: "/emergency-contacts/roofer",
+  },
+  {
+    label: "Carpenter",
+    href: "/emergency-contacts/carpenter",
+  },
+  {
+    label: "Internet Support",
+    href: "/emergency-contacts/internet-support",
+  },
+];
+
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
@@ -20,11 +79,13 @@ export default function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <img
-              alt="Your Company"
-              src="/images/logo/logo1.png"
-              className="h-8 w-auto"
-            />
+            <Link href="/">
+              <img
+                alt="lchub logo"
+                src="/images/logo/logo1.png"
+                className="h-8 w-auto"
+              />
+            </Link>
           </div>
           {/* Navigation Menu */}
           <div className="flex items-center space-x-4">
@@ -65,38 +126,20 @@ export default function Navbar() {
                   <NavigationMenuTrigger className="flex items-center px-3 py-2 rounded-md text-sm text-gray-700 hover:text-blue-700 bg-white">
                     Emergency Contact
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent className="w-48 border rounded-md shadow-lg p-2 bg-white">
+                  <NavigationMenuContent className="w-64 border rounded-md shadow-lg p-2 bg-white">
                     <ul>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href="#"
-                            className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded"
-                          >
-                            Police
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href="#"
-                            className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded"
-                          >
-                            Fire Department
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href="#"
-                            className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded"
-                          >
-                            Ambulance
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
+                      {emergencyContacts.map((contact) => (
+                        <li key={contact.label}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              href={contact.href}
+                              className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded"
+                            >
+                              {contact.label}
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>

@@ -48,13 +48,13 @@ export default function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex gap-4">
             <a
-              href="#"
+              href="/directory"
               className="bg-[#6DA2FB] text-white font-semibold px-6 py-3 rounded-full shadow hover:bg-blue-600 transition"
             >
               Browse Directory
             </a>
             <a
-              href="#"
+              href="/jobs"
               className="bg-white text-blue-700 font-semibold px-6 py-3 rounded-full shadow hover:bg-blue-100 transition border border-blue-200"
             >
               View Job Board
@@ -65,7 +65,7 @@ export default function HeroSection() {
         <div className="flex-1 flex justify-center">
           <div className="bg-white rounded-3xl shadow-lg p-6 flex items-center justify-center">
             <img
-              src="/images/hero-illustration.png"
+              src="/images/banner/banner.png"
               alt="Community Illustration"
               width={400}
               height={320}

@@ -8,7 +8,7 @@ export default function EmergencyTeaser() {
           Need Urgent Help?
         </h2>
         <a
-          href="#"
+          href="/emergency-contacts"
           className="bg-[#6DA2FB] text-white font-semibold px-8 py-3 rounded-full shadow hover:bg-blue-600 transition"
         >
           View Emergency Contacts

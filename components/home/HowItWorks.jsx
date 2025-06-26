@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { FaUserPlus, FaSearch, FaHandshake } from "react-icons/fa";
 
 const steps = [
@@ -6,16 +7,19 @@ const steps = [
     icon: <FaUserPlus className="text-blue-500 text-3xl" />,
     title: "Register an Account",
     desc: "Sign up in seconds to join your local community.",
+    link: "/register",
   },
   {
     icon: <FaSearch className="text-blue-500 text-3xl" />,
     title: "Search or Post Listings",
     desc: "Find services, jobs, or post your own listings easily.",
+    link: "/directory",
   },
   {
     icon: <FaHandshake className="text-blue-500 text-3xl" />,
     title: "Connect & Engage",
     desc: "Message, hire, or collaborate with trusted locals.",
+    link: "/messages",
   },
 ];
 
@@ -28,16 +32,17 @@ export default function HowItWorks() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {steps.map((step, idx) => (
-            <div
+            <Link
               key={idx}
-              className="bg-white rounded-xl shadow p-8 flex flex-col items-center text-center"
+              href={step.link}
+              className="bg-white rounded-xl shadow p-8 flex flex-col items-center text-center hover:bg-blue-50 transition cursor-pointer"
             >
               {step.icon}
               <h3 className="mt-4 text-lg font-semibold text-gray-800">
                 {step.title}
               </h3>
               <p className="mt-2 text-gray-600">{step.desc}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

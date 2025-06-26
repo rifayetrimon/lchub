@@ -2,6 +2,15 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const businessCategories = [
   "Plumbing",
@@ -222,20 +231,29 @@ export default function RegisterPage() {
                 <label className="block text-gray-700 font-semibold mb-2">
                   Business Category
                 </label>
-                <select
-                  name="businessCategory"
+                <Select
                   value={businessForm.businessCategory}
-                  onChange={handleBusinessChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-200 transition"
-                  required
+                  onValueChange={(value) =>
+                    setBusinessForm({
+                      ...businessForm,
+                      businessCategory: value,
+                    })
+                  }
                 >
-                  <option value="">Select category</option>
-                  {businessCategories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Categories</SelectLabel>
+                      {businessCategories.map((cat) => (
+                        <SelectItem key={cat} value={cat}>
+                          {cat}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

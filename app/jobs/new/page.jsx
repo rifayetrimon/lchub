@@ -1,5 +1,15 @@
 "use client";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const jobTypes = ["Full-time", "Part-time", "Freelance", "Internship"];
 const categories = [
@@ -37,6 +47,10 @@ export default function JobPostPage() {
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  function handleSelectChange(name, value) {
+    setForm({ ...form, [name]: value });
   }
 
   function handleSubmit(e) {
@@ -140,13 +154,13 @@ export default function JobPostPage() {
                 <label className="block text-gray-700 font-medium mb-1">
                   Job Title
                 </label>
-                <input
+                <Input
                   type="text"
                   name="title"
                   value={form.title}
                   onChange={handleChange}
                   required
-                  className="w-full rounded border border-gray-200 p-2"
+                  placeholder="Job Title"
                 />
               </div>
               {/* Company */}
@@ -154,34 +168,39 @@ export default function JobPostPage() {
                 <label className="block text-gray-700 font-medium mb-1">
                   Company / Business
                 </label>
-                <select
-                  name="company"
+                <Select
                   value={form.company}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded border border-gray-200 p-2"
+                  onValueChange={(value) =>
+                    handleSelectChange("company", value)
+                  }
                 >
-                  <option value="">Select company</option>
-                  {companies.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select company" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Companies</SelectLabel>
+                      {companies.map((c) => (
+                        <SelectItem key={c} value={c}>
+                          {c}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
               {/* Location */}
               <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Location
                 </label>
-                <input
+                <Input
                   type="text"
                   name="location"
                   value={form.location}
                   onChange={handleChange}
                   required
                   placeholder="e.g. Kuala Lumpur"
-                  className="w-full rounded border border-gray-200 p-2"
                 />
                 {/* For a map picker, you can integrate a map library here */}
               </div>
@@ -190,53 +209,62 @@ export default function JobPostPage() {
                 <label className="block text-gray-700 font-medium mb-1">
                   Job Type
                 </label>
-                <select
-                  name="type"
+                <Select
                   value={form.type}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded border border-gray-200 p-2"
+                  onValueChange={(value) => handleSelectChange("type", value)}
                 >
-                  <option value="">Select type</option>
-                  {jobTypes.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Job Types</SelectLabel>
+                      {jobTypes.map((t) => (
+                        <SelectItem key={t} value={t}>
+                          {t}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
               {/* Category */}
               <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Category
                 </label>
-                <select
-                  name="category"
+                <Select
                   value={form.category}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded border border-gray-200 p-2"
+                  onValueChange={(value) =>
+                    handleSelectChange("category", value)
+                  }
                 >
-                  <option value="">Select category</option>
-                  {categories.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Categories</SelectLabel>
+                      {categories.map((c) => (
+                        <SelectItem key={c} value={c}>
+                          {c}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
               {/* Salary or Rate */}
               <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Salary or Rate
                 </label>
-                <input
+                <Input
                   type="text"
                   name="salary"
                   value={form.salary}
                   onChange={handleChange}
                   placeholder="e.g. RM3000/month or RM20/hour"
-                  className="w-full rounded border border-gray-200 p-2"
                 />
               </div>
               {/* Application Email or URL */}
@@ -244,13 +272,12 @@ export default function JobPostPage() {
                 <label className="block text-gray-700 font-medium mb-1">
                   Application Email or URL
                 </label>
-                <input
+                <Input
                   type="text"
                   name="apply"
                   value={form.apply}
                   onChange={handleChange}
                   placeholder="e.g. jobs@company.com or https://apply.com"
-                  className="w-full rounded border border-gray-200 p-2"
                 />
               </div>
               {/* Description */}

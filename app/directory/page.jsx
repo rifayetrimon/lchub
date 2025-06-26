@@ -2,6 +2,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FaStar, FaSearch, FaMapMarkerAlt } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Dummy data for categories and providers
 const categories = [
@@ -76,37 +86,43 @@ export default function DirectoryPage() {
           <div className="mb-4">
             <label className="block text-gray-700 mb-1">Search</label>
             <div className="relative">
-              <input
+              <Input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Keyword..."
-                className="w-full py-2 pl-10 pr-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                className="w-full py-2 pl-10 pr-3"
               />
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 mb-1">Category</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full py-2 px-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
-            >
-              {categories.map((cat) => (
-                <option key={cat}>{cat}</option>
-              ))}
-            </select>
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Categories</SelectLabel>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 mb-1">Location</label>
             <div className="relative">
-              <input
+              <Input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="e.g. Bangsar"
-                className="w-full py-2 pl-10 pr-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                className="w-full py-2 pl-10 pr-3"
               />
               <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
@@ -125,16 +141,23 @@ export default function DirectoryPage() {
           </div>
           <div className="mb-2">
             <label className="block text-gray-700 mb-1">Minimum Rating</label>
-            <select
-              value={minRating}
-              onChange={(e) => setMinRating(Number(e.target.value))}
-              className="w-full py-2 px-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            <Select
+              value={minRating.toString()}
+              onValueChange={(value) => setMinRating(Number(value))}
             >
-              <option value={0}>Any</option>
-              <option value={3}>3+</option>
-              <option value={4}>4+</option>
-              <option value={4.5}>4.5+</option>
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Any" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Minimum Rating</SelectLabel>
+                  <SelectItem value="0">Any</SelectItem>
+                  <SelectItem value="3">3+</SelectItem>
+                  <SelectItem value="4">4+</SelectItem>
+                  <SelectItem value="4.5">4.5+</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </aside>
         <section className="flex-1">

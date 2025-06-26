@@ -2,6 +2,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FaSearch, FaMapMarkerAlt, FaBriefcase } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Dummy categories and jobs
 const categories = [
@@ -143,12 +153,12 @@ export default function JobBoardPage() {
           <div className="mb-4">
             <label className="block text-gray-700 mb-1">Keyword</label>
             <div className="relative">
-              <input
+              <Input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Job title or company..."
-                className="w-full py-2 pl-10 pr-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                className="w-full py-2 pl-10 pr-3"
               />
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
@@ -156,39 +166,51 @@ export default function JobBoardPage() {
           {/* Job Type */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-1">Job Type</label>
-            <select
-              value={jobType}
-              onChange={(e) => setJobType(e.target.value)}
-              className="w-full py-2 px-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
-            >
-              {jobTypes.map((type) => (
-                <option key={type}>{type}</option>
-              ))}
-            </select>
+            <Select value={jobType} onValueChange={setJobType}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select job type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Job Types</SelectLabel>
+                  {jobTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           {/* Category */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-1">Category</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full py-2 px-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
-            >
-              {categories.map((cat) => (
-                <option key={cat}>{cat}</option>
-              ))}
-            </select>
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Categories</SelectLabel>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           {/* Location */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-1">Location</label>
             <div className="relative">
-              <input
+              <Input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="e.g. Kuala Lumpur"
-                className="w-full py-2 pl-10 pr-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                className="w-full py-2 pl-10 pr-3"
               />
               <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
@@ -196,17 +218,24 @@ export default function JobBoardPage() {
           {/* Date Posted */}
           <div className="mb-2">
             <label className="block text-gray-700 mb-1">Date Posted</label>
-            <select
-              value={datePosted}
-              onChange={(e) => setDatePosted(Number(e.target.value))}
-              className="w-full py-2 px-3 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            <Select
+              value={datePosted.toString()}
+              onValueChange={(value) => setDatePosted(Number(value))}
             >
-              {dateOptions.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Any time" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Date Posted</SelectLabel>
+                  {dateOptions.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value.toString()}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </aside>
         {/* Job Listings */}

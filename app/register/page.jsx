@@ -39,6 +39,7 @@ export default function RegisterPage() {
     businessCategory: "",
     businessAddress: "",
     businessPhone: "",
+    registrationNumber: "", // Added field
   });
 
   function handleResidentChange(e) {
@@ -283,6 +284,20 @@ export default function RegisterPage() {
                   required
                 />
               </div>
+            </div>
+            {/* Registration Number / Licence Number field */}
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Registration Number / Licence Number
+              </label>
+              <Input
+                type="text"
+                name="registrationNumber"
+                value={businessForm.registrationNumber}
+                onChange={handleBusinessChange}
+                placeholder="Registration or Licence Number"
+                required
+              />
             </div>
             <button
               type="submit"

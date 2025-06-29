@@ -1,6 +1,3 @@
-// =======================================
-// FILE 2: /app/jobs/[jobId]/page.js (Job Details Page)
-// =======================================
 
 "use client";
 import { useState } from "react";

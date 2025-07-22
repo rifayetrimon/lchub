@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaSearch, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
-import { Input } from "@/components/ui/input";
 import myAxios from "@/lib/myAxios";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -14,6 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/common/Button";
+
+// Map category IDs to names
+const categoryMap = {
+  1: "Plumbing",
+  2: "Home Cleaning",
+  3: "Tutoring",
+  4: "Fitness & Wellness",
+  5: "IT & Tech Support",
+};
 
 const categories = [
   "All",
@@ -24,44 +34,52 @@ const categories = [
   "IT & Tech Support",
 ];
 
+const LIMIT = 12;
+
 export default function DirectoryPage() {
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [page, setPage] = useState(1);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     setHydrated(true);
   }, []);
 
-  useEffect(() => {
-    const fetchProviders = async () => {
-      try {
-        const res = await myAxios.get("/services/");
-        setProviders(res.data);
-      } catch (error) {
-        console.error("Failed to fetch providers:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchProviders = async (pageNum = 1) => {
+    setLoading(true);
+    const skip = (pageNum - 1) * LIMIT;
 
-    fetchProviders();
-  }, []);
+    try {
+      const res = await myAxios.get(`services/?skip=${skip}&limit=${LIMIT}`);
+      setProviders(res.data.items || []);
+    } catch (error) {
+      console.error("Failed to fetch providers:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProviders(page);
+  }, [page]);
 
   const filteredProviders = providers.filter((p) => {
     const matchesSearch =
       p.name?.toLowerCase().includes(search.toLowerCase()) ||
       p.address?.toLowerCase().includes(search.toLowerCase());
+
     const matchesCategory =
       category === "All" ||
-      categories
-        .find((c) => c.toLowerCase() === category.toLowerCase())
-        ?.includes(p.name);
+      categoryMap[p.service_category_id]?.toLowerCase() ===
+        category.toLowerCase();
 
     return matchesSearch && matchesCategory;
   });
+
+  const totalPages = Math.ceil(50 / LIMIT); // If you don’t know total, hardcode a max
 
   if (!hydrated) return null;
 
@@ -141,9 +159,13 @@ export default function DirectoryPage() {
                     <FaMapMarkerAlt className="inline mr-2 text-blue-500" />
                     {p.address}
                   </p>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 mb-2">
                     <FaPhoneAlt className="inline mr-2 text-green-500" />
                     {p.phone}
+                  </p>
+                  <p className="text-gray-600 mb-4">
+                    <span className="font-semibold">Category:</span>{" "}
+                    {categoryMap[p.service_category_id] || "Unknown"}
                   </p>
                   <Link
                     href={`/directory/${p.id}`}
@@ -155,6 +177,27 @@ export default function DirectoryPage() {
               ))
             )}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-8 gap-2">
+              <Button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+              >
+                Previous
+              </Button>
+              <span className="px-4 py-2 rounded bg-gray-200 text-gray-700">
+                Page {page} of {totalPages}
+              </span>
+              <Button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page === totalPages}
+              >
+                Next
+              </Button>
+            </div>
+          )}
         </section>
       </div>
     </main>

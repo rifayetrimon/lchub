@@ -16,36 +16,40 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/common/Button";
 
-// Map category IDs to names
-const categoryMap = {
-  1: "Plumbing",
-  2: "Home Cleaning",
-  3: "Tutoring",
-  4: "Fitness & Wellness",
-  5: "IT & Tech Support",
-};
-
-const categories = [
-  "All",
-  "Plumbing",
-  "Home Cleaning",
-  "Tutoring",
-  "Fitness & Wellness",
-  "IT & Tech Support",
-];
-
 const LIMIT = 12;
 
 export default function DirectoryPage() {
   const [providers, setProviders] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [page, setPage] = useState(1);
   const [hydrated, setHydrated] = useState(false);
+  const [categoryMap, setCategoryMap] = useState({});
+  const [totalCount, setTotalCount] = useState(50); // fallback total if API doesn't return
 
   useEffect(() => {
     setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await myAxios.get("service-categories/");
+        const data = res.data || [];
+        setCategories(data);
+        const map = {};
+        data.forEach((cat) => {
+          if (cat?.id && cat?.name) map[cat.id] = cat.name;
+        });
+        setCategoryMap(map);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const fetchProviders = async (pageNum = 1) => {
@@ -54,7 +58,12 @@ export default function DirectoryPage() {
 
     try {
       const res = await myAxios.get(`services/?skip=${skip}&limit=${LIMIT}`);
-      setProviders(res.data.items || []);
+      const data = res.data;
+
+      // Check if backend returns total count
+      if (data?.total) setTotalCount(data.total);
+
+      setProviders(data?.items || []);
     } catch (error) {
       console.error("Failed to fetch providers:", error);
     } finally {
@@ -79,7 +88,7 @@ export default function DirectoryPage() {
     return matchesSearch && matchesCategory;
   });
 
-  const totalPages = Math.ceil(50 / LIMIT); // If you don’t know total, hardcode a max
+  const totalPages = Math.ceil(totalCount / LIMIT);
 
   if (!hydrated) return null;
 
@@ -114,7 +123,7 @@ export default function DirectoryPage() {
             </div>
           </div>
 
-          {/* Category */}
+          {/* Category Filter */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-1">Category</label>
             <Select value={category} onValueChange={setCategory}>
@@ -124,9 +133,12 @@ export default function DirectoryPage() {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Categories</SelectLabel>
-                  {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
+                  <SelectItem key="all-category" value="All">
+                    All
+                  </SelectItem>
+                  {categories.map((cat, idx) => (
+                    <SelectItem key={cat?.id ?? `cat-${idx}`} value={cat.name}>
+                      {cat.name}
                     </SelectItem>
                   ))}
                 </SelectGroup>
@@ -135,7 +147,7 @@ export default function DirectoryPage() {
           </div>
         </aside>
 
-        {/* Results Section */}
+        {/* Results */}
         <section className="flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {loading ? (
@@ -147,9 +159,9 @@ export default function DirectoryPage() {
                 No providers found.
               </div>
             ) : (
-              filteredProviders.map((p) => (
+              filteredProviders.map((p, idx) => (
                 <div
-                  key={p.id}
+                  key={p?.id ?? `provider-${idx}`}
                   className="bg-white rounded-2xl shadow p-6 flex flex-col"
                 >
                   <h3 className="text-lg font-semibold text-gray-800 mb-1">
